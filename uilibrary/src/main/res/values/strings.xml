@@ -1,4 +1,5 @@
 <resources>
     <string name="empty_title"></string>
+    <string name="loading_wait">加载中...</string>
 
 </resources>

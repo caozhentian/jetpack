@@ -1,5 +1,6 @@
 package com.tix.jetpack.activity
 
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -24,13 +25,15 @@ class TitleNavActivity :BaseActivity(){
         R.id.action_home -> {
             // User chose the "Settings" item, show the app settings UI...
             Toast.makeText(this , "主页",Toast.LENGTH_LONG).show()
-            setActionMenu(R.menu.menu_title_nav1)
+            //setActionMenu(R.menu.menu_title_nav1)
             true
         }
 
         R.id.action_mine -> {
-            Toast.makeText(this , "我的",Toast.LENGTH_LONG).show()
-            setActionMenu(R.menu.menu_title_nav)
+            //Toast.makeText(this , "我的",Toast.LENGTH_LONG).show()
+            //setActionMenu(R.menu.menu_title_nav)
+            var intent = Intent(this , TestSingleFragmentActivity::class.java)
+            startActivity(intent)
             true
         }
 
