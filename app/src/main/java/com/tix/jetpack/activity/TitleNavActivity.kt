@@ -26,6 +26,8 @@ class TitleNavActivity :BaseActivity(){
             // User chose the "Settings" item, show the app settings UI...
             Toast.makeText(this , "主页",Toast.LENGTH_LONG).show()
             //setActionMenu(R.menu.menu_title_nav1)
+            var intent = Intent(this , MainActivity::class.java)
+            startActivity(intent)
             true
         }
 

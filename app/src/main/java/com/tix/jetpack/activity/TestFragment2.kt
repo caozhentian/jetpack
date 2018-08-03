@@ -9,13 +9,13 @@ import kotlinx.android.synthetic.main.frag_single_test_layout.*
 /**
 作者：created by ztcao on 2018/7/24 17 : 04
  */
-class TestFragment : BaseStateFragment<String>() {
+class TestFragment2 : BaseStateFragment<String>() {
     override fun getBaseViewModel(): BaseViewModel<String> {
         return getViewModel<TestViewModel>(baseActivity)
     }
 
     override fun displayData(data: String?) {
-        textView.text = "大家觉得"
+        textView.text = "大家觉得为我"
     }
 
     override fun getStateLayoutContent() = R.layout.frag_single_test_layout
