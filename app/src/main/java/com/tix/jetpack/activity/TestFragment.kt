@@ -1,5 +1,6 @@
 package com.tix.jetpack.activity
 
+import android.support.v4.app.FragmentActivity
 import com.tix.jetpack.R
 import com.tix.uilibrary.activity.BaseViewModel
 import com.tix.uilibrary.fragment.BaseStateFragment
@@ -11,11 +12,13 @@ import kotlinx.android.synthetic.main.frag_single_test_layout.*
  */
 class TestFragment : BaseStateFragment<String>() {
     override fun getBaseViewModel(): BaseViewModel<String> {
-        return getViewModel<TestViewModel>(baseActivity)
+        var testViewModel = getViewModel<TestViewModel>(context as FragmentActivity)
+        testViewModel.name = "ViewModel 子类覆盖实现"
+        return testViewModel
     }
 
     override fun displayData(data: String?) {
-        textView.text = "大家觉得"
+        textView.text = data
     }
 
     override fun getStateLayoutContent() = R.layout.frag_single_test_layout

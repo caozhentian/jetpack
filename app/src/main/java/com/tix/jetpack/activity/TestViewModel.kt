@@ -8,7 +8,8 @@ import io.reactivex.Observable
  */
 class TestViewModel:BaseViewModel<String>() {
 
+    var name:String = ""
     override fun getObservableData(): Observable<String> {
-       return  Observable.just("hello rxjava data")
+       return  Observable.just(name)
     }
 }
