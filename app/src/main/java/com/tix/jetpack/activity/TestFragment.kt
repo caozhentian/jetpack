@@ -2,7 +2,7 @@ package com.tix.jetpack.activity
 
 import android.support.v4.app.FragmentActivity
 import com.tix.jetpack.R
-import com.tix.uilibrary.activity.BaseViewModel
+import com.tix.uilibrary.viewmodel.BaseViewModel
 import com.tix.uilibrary.fragment.BaseStateFragment
 import com.tix.uilibrary.util.getViewModel
 import kotlinx.android.synthetic.main.frag_single_test_layout.*

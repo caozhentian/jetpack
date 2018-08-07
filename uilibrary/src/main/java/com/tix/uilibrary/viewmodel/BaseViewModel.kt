@@ -1,4 +1,4 @@
-package com.tix.uilibrary.activity
+package com.tix.uilibrary.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import io.reactivex.Observable

@@ -7,22 +7,18 @@ import com.ajguan.library.LoadModel
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.tix.uilibrary.R
+import com.tix.uilibrary.model.PageEntity
 import com.tix.uilibrary.model.PageInfo
+import com.tix.uilibrary.viewmodel.PageViewModel
 import com.trello.rxlifecycle2.android.FragmentEvent
 import io.reactivex.Observable
-import java.util.*
 
 /**支持分页查询Fragment
  * Created by ztcao on 2018/8/6
  */
 open abstract class BaseListFrament<T> : BaseFragment() {
 
-    var nextPage: Int = 0;
-
-    //数据的容器
-    protected var datas = ArrayList<T>()
-
-    var easylayout :EasyRefreshLayout? = null ;
+    var easylayout: EasyRefreshLayout? = null;
     //列表RecyclerView
     var dataRecyleView: RecyclerView? = null
 
@@ -42,21 +38,25 @@ open abstract class BaseListFrament<T> : BaseFragment() {
         dataRecyleView?.layoutManager = getLayoutManager()
         datadapter = initAdater()
         dataRecyleView?.adapter = datadapter
-        datadapter?.setOnItemClickListener { _, _, position -> itemClick(datas[position]) }
+        datadapter?.setOnItemClickListener { _, _, position ->
+            getData().let {
+                itemClick(it[position])
+            }
+        }
     }
 
-    protected open fun itemClick(data: T){}
+    protected open fun itemClick(data: T) {}
 
     //下拉刷新数据
     fun refreshData(datasSource: List<T>) {
-        datas.clear();
-        datas.addAll(datasSource)
+        getData().clear()
+        getData().addAll(datasSource)
         datadapter?.notifyDataSetChanged()
         easylayout?.refreshComplete()
     }
 
     fun loadMoreData(datasSource: List<T>) {
-        datas.addAll(datasSource)
+        getData().addAll(datasSource)
         datadapter?.notifyDataSetChanged()
         easylayout?.loadMoreComplete()
     }
@@ -72,54 +72,83 @@ open abstract class BaseListFrament<T> : BaseFragment() {
     private fun initUpDown() {
         easylayout?.addEasyEvent(object : EasyRefreshLayout.EasyEvent {
             override fun onLoadMore() {
-                nextPage++
+                setPageViewModel(true, getPageSize(), getKeyword())
                 loadDataByPage()
             }
-            override fun onRefreshing(){
-                nextPage = 0
+
+            override fun onRefreshing() {
+                setPageViewModel(false, getPageSize(), getKeyword())
                 loadDataByPage()
-            } })
+            }
+        })
     }
 
-    override  fun loadData() {
+    override fun loadData() {
         easylayout?.autoRefresh()
     }
+
     //开始指定page页的加载数据
     fun loadDataByPage() {
-        var observable = getObservable(PageInfo(nextPage,getPageSize() , keyword = getKeyword()))
+        var observable = getObservable()
         observable.compose(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribe({
-                    if(nextPage == 0){
-                        refreshData(it)
+                    var pageViewModel = getPageViewModel()
+                    if (pageViewModel.nextPage == 0) {
+                        refreshData(it.data)
+                    } else {
+                        loadMoreData(it.data)
                     }
-                    else{
-                        loadMoreData(it)
-                    }
-                }){
-                    if( nextPage > 0){
-                        nextPage--
+                }) {
+                    var pageViewModel = getPageViewModel()
+                    if (pageViewModel.nextPage > 0) {
+                        pageViewModel.nextPage--
                     }
                 }
     }
 
     //子类实现此方法
-    abstract fun getObservable(pageInfo: PageInfo):Observable<List<T>>
+    private fun getObservable(): Observable<PageEntity<T>> {
+        return getPageViewModel().getObservableData()
+    }
+
     //默认关键字的实现
-    protected  open fun getKeyword() = ""
+    protected open fun getKeyword() = ""
+
     //禁用下拉加载更多
     fun disableLoadMoreData() {
         easylayout?.loadMoreModel = LoadModel.NONE
     }
+
     //禁用上拉刷新
-    fun disableLoadData(){
+    fun disableLoadData() {
         easylayout?.isEnablePullToRefresh = false
     }
-    protected open fun getPageSize():Int{
+
+    protected open fun getPageSize(): Int {
         return PageInfo.PAGE_DEFAULT_SIZE
     }
+
     //是否使用默认分割线
-    protected open fun isEnableDivider():Boolean = true
+    protected open fun isEnableDivider(): Boolean = true
+
     //是否显示ll_list_search_header布局
-    protected open fun isShowSearchHeader():Boolean = false
+    protected open fun isShowSearchHeader(): Boolean = false
+
+    abstract fun getPageViewModel(): PageViewModel<T>
+
+    protected fun setPageViewModel(nextPageFlag: Boolean, pageSize: Int, keyword: String) {
+        var pageViewModel = getPageViewModel()
+        if (nextPageFlag) {
+            pageViewModel.nextPage++
+        } else {
+            pageViewModel.nextPage = 0
+        }
+        pageViewModel.keyword = keyword
+        pageViewModel.pageSize = pageSize
+    }
+
+    protected fun getData(): MutableList<T> {
+        return getPageViewModel().totalData
+    }
 
 }

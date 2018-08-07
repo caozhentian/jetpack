@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.fingdo.statelayout.StateLayout
 import com.tix.uilibrary.R
-import com.tix.uilibrary.activity.BaseViewModel
+import com.tix.uilibrary.viewmodel.BaseViewModel
 import com.trello.rxlifecycle2.android.FragmentEvent
 import kotlinx.android.synthetic.main.frag_state_layout.*
 
@@ -39,7 +39,7 @@ abstract  class BaseStateFragment<T> :BaseFragment() {
     //内容的布局文件
     @LayoutRes abstract  fun getStateLayoutContent():Int
     //获取关联的ViewModel模型
-    abstract fun getBaseViewModel():BaseViewModel<T>
+    abstract fun getBaseViewModel(): BaseViewModel<T>
 
     //使用Rxjava2 加载数据
     override fun loadData(){

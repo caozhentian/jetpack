@@ -6,15 +6,12 @@ import java.io.Serializable
  * 分页信息
  * Created by ztcao on 2018/1/26.
  */
-open class PageInfo(var nextPage: Int, var pageSize: Int = PAGE_DEFAULT_SIZE , var keyword :String? ="") : Serializable {
-
-    constructor() : this(0, PAGE_DEFAULT_SIZE) {
-
-    }
+open class PageInfo(var nextPage: Int, var pageSize: Int = PAGE_DEFAULT_SIZE , var keyword :String ="") : Serializable {
 
     fun toMap():Map<String, String>{
         return mapOf(PageInfo.NEXT_PAGE_KEY to nextPage.toString() ,
-                PageInfo.PAGE_SIZE_KEY to       pageSize.toString())
+                PageInfo.PAGE_SIZE_KEY to       pageSize.toString() ,
+                KEY_WORD to keyword)
 
     }
     companion object {
@@ -23,5 +20,6 @@ open class PageInfo(var nextPage: Int, var pageSize: Int = PAGE_DEFAULT_SIZE , v
 
         const val PAGE_SIZE_KEY = "pageSize"
         const val NEXT_PAGE_KEY = "nextPage"
+        const val KEY_WORD = "keyword"
     }
 }

@@ -1,24 +1,21 @@
 package com.tix.jetpack.activity
 
+import android.support.v4.app.FragmentActivity
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.tix.uilibrary.fragment.BaseListFrament
-import com.tix.uilibrary.model.PageInfo
-import io.reactivex.Observable
+import com.tix.uilibrary.util.getViewModel
+import com.tix.uilibrary.viewmodel.PageViewModel
 
 /**
 作者：created by ztcao on 2018/7/24 17 : 04
  */
 class TestFragment2 : BaseListFrament<String>() {
+    override fun getPageViewModel(): PageViewModel<String> {
+        return getViewModel<TestPageViewModel>(context as FragmentActivity)
+    }
+
     override fun initAdater(): BaseQuickAdapter<String, BaseViewHolder> {
-        return TestQuickAdapter(datas)
+        return TestQuickAdapter(getData())
     }
-
-    override fun getObservable(pageInfo: PageInfo): Observable<List<String>> {
-       return Observable.just(arrayListOf("1" ,"2","3","4" ,"5","6","7" ,"8","9","10" ,"11","12","13","14"))
-    }
-
-
-
-
 }
