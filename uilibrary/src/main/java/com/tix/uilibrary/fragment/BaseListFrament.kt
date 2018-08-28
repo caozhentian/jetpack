@@ -9,6 +9,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.tix.uilibrary.R
 import com.tix.uilibrary.model.PageEntity
 import com.tix.uilibrary.model.PageInfo
+import com.tix.uilibrary.util.getViewModel
 import com.tix.uilibrary.viewmodel.PageViewModel
 import com.trello.rxlifecycle2.android.FragmentEvent
 import io.reactivex.Observable
@@ -84,7 +85,10 @@ open abstract class BaseListFrament<T> : BaseFragment() {
     }
 
     override fun loadData() {
-        easylayout?.autoRefresh()
+        var pageViewModel = getPageViewModel()
+        if(pageViewModel.totalData.size ==  0){ //Activity 正常Finished
+            easylayout?.autoRefresh() // 从网络获取
+        }
     }
 
     //开始指定page页的加载数据

@@ -10,8 +10,6 @@ abstract class PageViewModel<T>: BaseViewModel<PageEntity<T>>() {
     var nextPage : Int = 0
     var pageSize : Int = PageInfo.PAGE_DEFAULT_SIZE
     var keyword:   String = ""
-    //数据的容器
-    var pageEntity :  PageEntity<T> ? = null
     //总的数据
     var totalData = arrayListOf<T>()
 }

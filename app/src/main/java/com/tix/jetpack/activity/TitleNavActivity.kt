@@ -5,6 +5,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.tix.jetpack.R
+import com.tix.jetpack.model.User
+import com.tix.net.RetrofitManager
 import com.tix.uilibrary.activity.BaseActivity
 
 /**
@@ -14,10 +16,11 @@ class TitleNavActivity :BaseActivity(){
     override fun getPlaceholderLayout() = R.layout.title_nav_layout
     override fun getTitleStrRes() = R.string.title_nav
     override fun isShowNav() = false
-
+    lateinit var retrofitManager: RetrofitManager
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // 绑定toobar跟menu
         menuInflater.inflate(R.menu.menu_title_nav, menu)
+        retrofitManager = RetrofitManager.getInstance()
         return true
     }
 
@@ -26,8 +29,9 @@ class TitleNavActivity :BaseActivity(){
             // User chose the "Settings" item, show the app settings UI...
             Toast.makeText(this , "主页",Toast.LENGTH_LONG).show()
             //setActionMenu(R.menu.menu_title_nav1)
-            var intent = Intent(this , MainActivity::class.java)
-            startActivity(intent)
+            //var intent = Intent(this , MainActivity::class.java)
+            //startActivity(intent)
+            login()
             true
         }
 
@@ -44,5 +48,16 @@ class TitleNavActivity :BaseActivity(){
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun login(){
+        retrofitManager.post<User>("nologin/login" ,
+                mapOf("mobileOrNo" to "13186075290" ,"password" to "czt12345","imei" to "asdfde09090") ,
+                User::class.java)
+                .subscribe({
+                    it.userName
+                }){
+                    it.toString()
+                }
     }
 }

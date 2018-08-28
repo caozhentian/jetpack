@@ -91,4 +91,6 @@ abstract class BaseActivity : AppCompatActivity() {
         base_toolbar.menu.clear()
         base_toolbar.inflateMenu(resMenuId)
     }
+
+
 }
