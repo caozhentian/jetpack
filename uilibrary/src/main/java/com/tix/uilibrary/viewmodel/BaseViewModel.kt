@@ -11,5 +11,6 @@ abstract class BaseViewModel<T>:ViewModel() {
 
     // Create a Observable  with a T
     private var data: Observable<T>? = null
-    abstract fun  getObservableData():Observable<T>
+    //获取页面的最主要数据的Observable
+    abstract fun  getMainObservableData():Observable<T>
 }

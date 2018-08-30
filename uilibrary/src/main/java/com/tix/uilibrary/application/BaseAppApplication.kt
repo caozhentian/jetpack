@@ -22,8 +22,8 @@ abstract class BaseAppApplication:Application() {
         //EventBus.getDefault().unregister(this)
     }
 
-    private fun initRetrofitManager() {
-       RetrofitManager.init("http://jsjr1.3tichina.com:80/jinshangjinrong/jinshangjinrong/")
+    protected open fun initRetrofitManager() {
+
     }
 
     private fun initLogInfo(){
@@ -40,10 +40,6 @@ abstract class BaseAppApplication:Application() {
 
     abstract fun dealTokenExpiresMessage()
 
-    fun initUrlBasePath(baseUrl:String ,baseResUrl:String){
-
-
-    }
     companion object {
         lateinit var baseAppApplication :BaseAppApplication
     }

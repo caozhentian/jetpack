@@ -10,9 +10,9 @@ import com.tix.uilibrary.util.replaceFragment
  * 单个Fragment的基类
  * Created by ztcao on 2018/7/24
  */
-abstract class BaseSingleFragmentActivity<T : BaseFragment> : BaseActivity() {
+abstract class BaseSingleFragmentActivity : BaseActivity() {
 
-    protected abstract fun createFragment(): T
+    protected abstract fun  createFragment(): BaseFragment
 
     override fun getPlaceholderLayout() = R.layout.act_single_fragment
 
@@ -33,7 +33,7 @@ abstract class BaseSingleFragmentActivity<T : BaseFragment> : BaseActivity() {
         }
     }
 
-    protected fun getCurFragment(): T {
+    protected fun <T:BaseFragment> getCurFragment(): T {
         return supportFragmentManager.findFragmentById(R.id.fragment_container) as T
     }
 

@@ -1,4 +1,4 @@
-package com.tix.jetpack.activity
+package com.tix.jetpack.activity.main
 
 import com.tix.jetpack.R
 import com.tix.uilibrary.activity.BaseMainActivity
@@ -10,10 +10,11 @@ import com.tix.uilibrary.fragment.BaseFragment
 class MainActivity:BaseMainActivity() {
     override fun getFragments(): List<BaseFragment> {
         var fragments = arrayListOf<BaseFragment>()
-        fragments.add(TestFragment())
-        fragments.add(TestFragment2())
+        fragments.add(HomeFragment())
+        fragments.add(InfoListFragment())
         return fragments
     }
 
+    //底部导航栏
     override fun getBottomMenus() = R.menu.action_navigation
 }

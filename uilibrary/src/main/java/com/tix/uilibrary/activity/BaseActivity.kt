@@ -6,8 +6,11 @@ import android.support.annotation.*
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.tix.uilibrary.R
+import com.tix.uilibrary.util.showInfoToast
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.act_base_layout.*
 
 /**
@@ -92,5 +95,22 @@ abstract class BaseActivity : AppCompatActivity() {
         base_toolbar.inflateMenu(resMenuId)
     }
 
+    //提交数据建议
+    fun <T> submitData(observable: Observable<T>, success:(data:T) -> Unit, error:(error: Throwable) ->Unit  = {}){
+        //进度条 定义在act_base_layout.xml
+        if(indeterminateBar?.visibility != View.GONE){//当前请求，没有完成，禁止用户再次重复操作
+            showInfoToast("请稍候...")
+            return
+        }
+        indeterminateBar?.visibility = View.VISIBLE
+        observable.subscribe({
+            success(it)
+            indeterminateBar?.visibility = View.GONE
+        }){
+            it?.let{showInfoToast(it.message?:"未知错误")}
+            error(it)
+            indeterminateBar?.visibility = View.GONE
+        }
+    }
 
 }

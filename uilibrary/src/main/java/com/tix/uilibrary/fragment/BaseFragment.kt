@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.tix.uilibrary.UiEvent
+import com.tix.uilibrary.activity.BaseActivity
 import com.trello.rxlifecycle2.LifecycleProvider
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.RxLifecycle
@@ -15,7 +16,6 @@ import com.trello.rxlifecycle2.android.FragmentEvent
 import com.trello.rxlifecycle2.android.RxLifecycleAndroid
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import kotlinx.android.synthetic.main.frag_state_layout.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -166,5 +166,13 @@ abstract class BaseFragment: Fragment() , LifecycleProvider<FragmentEvent> {
     override fun onDetach() {
         lifecycleSubject.onNext(FragmentEvent.DETACH)
         super.onDetach()
+    }
+
+    //提交数据建议
+    fun <T> submitData(observable: Observable<T>, success:(data:T) -> Unit , error:(error:Throwable) ->Unit = {} ){
+        var baseActivity = context as? BaseActivity
+        baseActivity?.let {
+            it.submitData(observable ,success , error )
+        }
     }
 }

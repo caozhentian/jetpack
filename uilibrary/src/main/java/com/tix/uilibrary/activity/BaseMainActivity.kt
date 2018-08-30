@@ -78,4 +78,6 @@ open abstract class BaseMainActivity:BaseActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
+
+    override fun isShowNav() = false
 }

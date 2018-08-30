@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
     android:orientation="vertical">
     <!--  目的是 UI更好定制 -->
     <LinearLayout
@@ -14,12 +16,15 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/ll_header"
+        app:layout_constraintBottom_toTopOf="@+id/ll_footer"
         android:orientation="vertical"></FrameLayout>
 
     <LinearLayout
         android:id="@+id/ll_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical"></LinearLayout>
-</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

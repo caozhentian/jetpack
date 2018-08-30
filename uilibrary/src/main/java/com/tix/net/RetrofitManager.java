@@ -5,11 +5,14 @@ import android.text.TextUtils;
 import com.tix.net.api.ApiService;
 import com.tix.net.func.ApiResultFunc;
 import com.tix.net.utils.RxUtil;
+import com.tix.net.utils.Utils;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
@@ -23,6 +26,9 @@ public class RetrofitManager {
 
     private static  RetrofitManager retrofitManager ;
     private static String baseUrl ; //URL
+    private static List<? extends Interceptor> interceptorList ;
+
+
     private OkHttpClient.Builder okHttpClientBuilder;                 //okhttp请求的客户端
     private Retrofit.Builder     retrofitBuilder;                      //Retrofit请求Builder
     private OkHttpClient okHttpClient ;
@@ -34,6 +40,10 @@ public class RetrofitManager {
             throw new IllegalArgumentException("请首先调用init方法") ;
         }
         okHttpClientBuilder = new OkHttpClient.Builder();
+        if(interceptorList != null ){
+            for(Interceptor interceptor :interceptorList)
+            okHttpClientBuilder.addInterceptor(interceptor) ;
+        }
         okHttpClient = okHttpClientBuilder.build();
         retrofitBuilder = generateRetrofit(baseUrl) ;
         retrofitBuilder.client(okHttpClient);
@@ -43,8 +53,12 @@ public class RetrofitManager {
     }
 
     //可以在Application创建时调用
-    public static final void  init(String appBaseUrl){
+    public static final RetrofitManager  init(String appBaseUrl , List<? extends Interceptor> interceptors){
         baseUrl = appBaseUrl ;
+        if(interceptors != null && interceptors.size()> 0){
+            interceptorList = interceptors ;
+        }
+        return getInstance() ;
     }
 
     public static final RetrofitManager getInstance(){
@@ -56,7 +70,6 @@ public class RetrofitManager {
         }
     }
 
-
     /**
      * 根据当前的请求参数，生成对应的Retrofit
      */
@@ -66,7 +79,7 @@ public class RetrofitManager {
     }
 
     public   <T> Observable<T> post(String url , Map<String, String> params , Type dataType){
-        Observable<ResponseBody> observable =  apiManager.post("nologin/login" ,  params );
+        Observable<ResponseBody> observable =  apiManager.post(url ,  params );
         return observable.map(new ApiResultFunc(dataType))
                 .compose( RxUtil._io_main()) ;
     }

@@ -1,6 +1,5 @@
 package com.tix.uilibrary.fragment
 
-import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -31,10 +30,6 @@ abstract  class BaseStateFragment<T> :BaseFragment() {
             override fun loginClick() = gotoLogin() })
         state_layout.setTipText(StateLayout.LOADING ,getString(R.string.loading_wait))
     }
-    override fun initData(savedInstanceState: Bundle?) {
-        super.initData(savedInstanceState)
-        onLazyLoad()
-    }
 
     //内容的布局文件
     @LayoutRes abstract  fun getStateLayoutContent():Int
@@ -45,7 +40,7 @@ abstract  class BaseStateFragment<T> :BaseFragment() {
     override fun loadData(){
         state_layout.showLoadingView() //加载视图
         var baseViewModel = getBaseViewModel()
-        baseViewModel.getObservableData()
+        baseViewModel.getMainObservableData()
                 .compose(bindUntilEvent(FragmentEvent.DESTROY_VIEW))
                 .subscribe({
             state_layout.showContentView()

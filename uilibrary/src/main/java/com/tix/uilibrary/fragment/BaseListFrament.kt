@@ -112,7 +112,7 @@ open abstract class BaseListFrament<T> : BaseFragment() {
 
     //子类实现此方法
     private fun getObservable(): Observable<PageEntity<T>> {
-        return getPageViewModel().getObservableData()
+        return getPageViewModel().getMainObservableData()
     }
 
     //默认关键字的实现
