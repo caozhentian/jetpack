@@ -9,7 +9,6 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.tix.uilibrary.R
 import com.tix.uilibrary.model.PageEntity
 import com.tix.uilibrary.model.PageInfo
-import com.tix.uilibrary.util.getViewModel
 import com.tix.uilibrary.viewmodel.PageViewModel
 import com.trello.rxlifecycle2.android.FragmentEvent
 import io.reactivex.Observable
@@ -49,16 +48,28 @@ open abstract class BaseListFrament<T> : BaseFragment() {
     protected open fun itemClick(data: T) {}
 
     //下拉刷新数据
-    fun refreshData(datasSource: List<T>) {
+    private fun refreshData(datasSource: List<T>) {
         getData().clear()
-        getData().addAll(datasSource)
-        datadapter?.notifyDataSetChanged()
+        if(datasSource.isEmpty()) {
+            showToast(getString(R.string.no_data))
+        }
+        else{
+            getData().addAll(datasSource)
+            datadapter?.notifyDataSetChanged()
+        }
         easylayout?.refreshComplete()
     }
 
-    fun loadMoreData(datasSource: List<T>) {
-        getData().addAll(datasSource)
-        datadapter?.notifyDataSetChanged()
+    private fun loadMoreData(datasSource: List<T>) {
+        if(datasSource.isEmpty()){
+            var pageViewModel = getPageViewModel()
+            pageViewModel.nextPage -- //恢复页面值
+            showToast(getString(R.string.no_more_data))
+        }
+        else{
+            getData().addAll(datasSource)
+            datadapter?.notifyDataSetChanged()
+        }
         easylayout?.loadMoreComplete()
     }
 
@@ -106,6 +117,10 @@ open abstract class BaseListFrament<T> : BaseFragment() {
                     var pageViewModel = getPageViewModel()
                     if (pageViewModel.nextPage > 0) {
                         pageViewModel.nextPage--
+                        easylayout?.loadMoreComplete()
+                    }
+                    else{
+                        easylayout?.refreshComplete()
                     }
                 }
     }

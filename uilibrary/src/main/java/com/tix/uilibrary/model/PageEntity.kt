@@ -9,7 +9,7 @@ class PageEntity<T> {
     val pageSize: Int = 0// 一共的页数
     val count: Int = 0// 数据条数
     val pageCount: Int = 0// 每页的数据条数
-    var data = arrayListOf<T>()
+    var data :MutableList<T> = arrayListOf<T>()
 
     fun isLastPage():Boolean{
         return false

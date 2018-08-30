@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import io.reactivex.annotations.NonNull;
@@ -73,8 +74,15 @@ public class ApiResultFunc<T> implements Function<ResponseBody, ApiResult<T>> {
                 if (result != null) {
                     apiResult = result;
                     if (apiResult.getData() != null) {
-                        T data = gson.fromJson(apiResult.getData().toString(), clazz);
-                        apiResult.setData(data);
+                        if(type instanceof ParameterizedType){ //List<User> 这种格式
+                            T data = gson.fromJson(apiResult.getData().toString(), type);
+                            apiResult.setData(data);
+                        }
+                        else {
+                            T data = gson.fromJson(apiResult.getData().toString(), clazz);
+                            apiResult.setData(data);
+                        }
+
                     } else {
                         apiResult.setMsg("ApiResult's data is null");
                     }

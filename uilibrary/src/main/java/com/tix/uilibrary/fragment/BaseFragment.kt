@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.tix.uilibrary.UiEvent
 import com.tix.uilibrary.activity.BaseActivity
+import com.tix.uilibrary.util.showInfoToast
 import com.trello.rxlifecycle2.LifecycleProvider
 import com.trello.rxlifecycle2.LifecycleTransformer
 import com.trello.rxlifecycle2.RxLifecycle
@@ -173,6 +174,13 @@ abstract class BaseFragment: Fragment() , LifecycleProvider<FragmentEvent> {
         var baseActivity = context as? BaseActivity
         baseActivity?.let {
             it.submitData(observable ,success , error )
+        }
+    }
+
+    fun showToast(msg:String?){
+        var baseActivity = context as? BaseActivity
+        baseActivity?.let{
+            it.showInfoToast(msg?:"未知错误")
         }
     }
 }
