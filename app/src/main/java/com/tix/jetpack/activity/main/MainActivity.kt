@@ -12,6 +12,7 @@ class MainActivity:BaseMainActivity() {
         var fragments = arrayListOf<BaseFragment>()
         fragments.add(HomeFragment())
         fragments.add(InfoListFragment())
+        fragments.add(MineFragment())
         return fragments
     }
 

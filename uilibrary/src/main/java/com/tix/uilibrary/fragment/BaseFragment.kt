@@ -156,6 +156,7 @@ abstract class BaseFragment: Fragment() , LifecycleProvider<FragmentEvent> {
     override fun onDestroyView() {
         lifecycleSubject.onNext(FragmentEvent.DESTROY_VIEW)
         EventBus.getDefault().unregister(this)
+        mIsViewPrepare = false
         super.onDestroyView()
     }
 
